@@ -2360,7 +2360,7 @@ img {
 
 .tool-badge i,
 .tool-badge svg {
-    font-size: 1.2rem;
+    font-size: 3.2rem;
     transition: all 0.3s ease;
 }
 
@@ -2408,39 +2408,249 @@ img {
     z-index: 1;
 }
 
-/* Stagger animation on scroll */
-.tool-badge {
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
+/* Continuous floating animation */
+@keyframes float-badge {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
 }
 
-.tool-badge:nth-child(1) { animation-delay: 0.05s; }
-.tool-badge:nth-child(2) { animation-delay: 0.1s; }
-.tool-badge:nth-child(3) { animation-delay: 0.15s; }
-.tool-badge:nth-child(4) { animation-delay: 0.2s; }
-.tool-badge:nth-child(5) { animation-delay: 0.25s; }
-.tool-badge:nth-child(6) { animation-delay: 0.3s; }
-.tool-badge:nth-child(7) { animation-delay: 0.35s; }
-.tool-badge:nth-child(8) { animation-delay: 0.4s; }
-.tool-badge:nth-child(9) { animation-delay: 0.45s; }
-.tool-badge:nth-child(10) { animation-delay: 0.5s; }
-.tool-badge:nth-child(11) { animation-delay: 0.55s; }
-.tool-badge:nth-child(12) { animation-delay: 0.6s; }
-.tool-badge:nth-child(13) { animation-delay: 0.65s; }
-.tool-badge:nth-child(14) { animation-delay: 0.7s; }
-.tool-badge:nth-child(15) { animation-delay: 0.75s; }
-.tool-badge:nth-child(16) { animation-delay: 0.8s; }
-.tool-badge:nth-child(17) { animation-delay: 0.85s; }
-.tool-badge:nth-child(18) { animation-delay: 0.9s; }
-.tool-badge:nth-child(19) { animation-delay: 0.95s; }
-.tool-badge:nth-child(20) { animation-delay: 1s; }
-.tool-badge:nth-child(21) { animation-delay: 1.05s; }
-.tool-badge:nth-child(22) { animation-delay: 1.1s; }
-.tool-badge:nth-child(23) { animation-delay: 1.15s; }
-.tool-badge:nth-child(24) { animation-delay: 1.2s; }
-.tool-badge:nth-child(25) { animation-delay: 1.25s; }
-.tool-badge:nth-child(26) { animation-delay: 1.3s; }
-.tool-badge:nth-child(27) { animation-delay: 1.35s; }
+/* Pulse glow animation */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    }
+    50% {
+        box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+    }
+}
+
+/* Brand Colors and Animations for Each Tool - Brighter Text */
+.tool-badge:nth-child(1) { /* Kali Linux */
+    background: rgba(36, 113, 163, 0.25);
+    border-color: rgba(100, 180, 230, 0.6);
+    color: #64B4E6;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.05s, 0.05s;
+}
+
+.tool-badge:nth-child(2) { /* Ubuntu */
+    background: rgba(233, 84, 32, 0.25);
+    border-color: rgba(255, 120, 80, 0.6);
+    color: #FF7850;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.1s, 0.4s;
+}
+
+.tool-badge:nth-child(3) { /* JavaScript */
+    background: rgba(247, 223, 30, 0.25);
+    border-color: rgba(255, 235, 100, 0.6);
+    color: #FFEB64;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.15s, 0.75s;
+}
+
+.tool-badge:nth-child(4) { /* PHP */
+    background: rgba(119, 123, 180, 0.25);
+    border-color: rgba(160, 165, 220, 0.6);
+    color: #A0A5DC;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.2s, 1.1s;
+}
+
+.tool-badge:nth-child(5) { /* C */
+    background: rgba(0, 89, 156, 0.25);
+    border-color: rgba(80, 150, 220, 0.6);
+    color: #5096DC;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.25s, 1.45s;
+}
+
+.tool-badge:nth-child(6) { /* C++ */
+    background: rgba(0, 89, 156, 0.25);
+    border-color: rgba(80, 150, 220, 0.6);
+    color: #5096DC;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.3s, 1.8s;
+}
+
+.tool-badge:nth-child(7) { /* HTML5 */
+    background: rgba(227, 79, 38, 0.25);
+    border-color: rgba(255, 120, 90, 0.6);
+    color: #FF785A;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.35s, 2.15s;
+}
+
+.tool-badge:nth-child(8) { /* CSS3 */
+    background: rgba(38, 77, 228, 0.25);
+    border-color: rgba(100, 140, 255, 0.6);
+    color: #648CFF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.4s, 2.5s;
+}
+
+.tool-badge:nth-child(9) { /* Python */
+    background: rgba(55, 118, 171, 0.25);
+    border-color: rgba(100, 170, 230, 0.6);
+    color: #64AAE6;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.45s, 0.2s;
+}
+
+.tool-badge:nth-child(10) { /* Bootstrap */
+    background: rgba(121, 82, 179, 0.25);
+    border-color: rgba(170, 130, 230, 0.6);
+    color: #AA82E6;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.5s, 0.55s;
+}
+
+.tool-badge:nth-child(11) { /* MySQL */
+    background: rgba(0, 117, 143, 0.25);
+    border-color: rgba(60, 180, 210, 0.6);
+    color: #3CB4D2;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.55s, 0.9s;
+}
+
+.tool-badge:nth-child(12) { /* React */
+    background: rgba(97, 218, 251, 0.25);
+    border-color: rgba(130, 230, 255, 0.6);
+    color: #82E6FF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.6s, 1.25s;
+}
+
+.tool-badge:nth-child(13) { /* Tailwind CSS */
+    background: rgba(6, 182, 212, 0.25);
+    border-color: rgba(60, 220, 245, 0.6);
+    color: #3CDCF5;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.65s, 1.6s;
+}
+
+.tool-badge:nth-child(14) { /* Express.js */
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #FFFFFF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.7s, 1.95s;
+}
+
+.tool-badge:nth-child(15) { /* React Native */
+    background: rgba(97, 218, 251, 0.25);
+    border-color: rgba(130, 230, 255, 0.6);
+    color: #82E6FF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.75s, 2.3s;
+}
+
+.tool-badge:nth-child(16) { /* Git */
+    background: rgba(240, 80, 50, 0.25);
+    border-color: rgba(255, 130, 100, 0.6);
+    color: #FF8264;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.8s, 2.65s;
+}
+
+.tool-badge:nth-child(17) { /* GitHub */
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #FFFFFF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.85s, 0.35s;
+}
+
+.tool-badge:nth-child(18) { /* VS Code */
+    background: rgba(0, 122, 204, 0.25);
+    border-color: rgba(60, 170, 240, 0.6);
+    color: #3CAAF0;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.9s, 0.7s;
+}
+
+.tool-badge:nth-child(19) { /* Cursor */
+    background: rgba(0, 204, 237, 0.25);
+    border-color: rgba(60, 230, 255, 0.6);
+    color: #3CE6FF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 0.95s, 1.05s;
+}
+
+.tool-badge:nth-child(20) { /* Stack Overflow */
+    background: rgba(244, 128, 36, 0.25);
+    border-color: rgba(255, 170, 100, 0.6);
+    color: #FFAA64;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1s, 1.4s;
+}
+
+.tool-badge:nth-child(21) { /* Hugging Face */
+    background: rgba(255, 213, 0, 0.25);
+    border-color: rgba(255, 230, 100, 0.6);
+    color: #FFE664;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1.05s, 1.75s;
+}
+
+.tool-badge:nth-child(22) { /* Trae */
+    background: rgba(129, 33, 208, 0.25);
+    border-color: rgba(180, 100, 240, 0.6);
+    color: #B464F0;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1.1s, 2.1s;
+}
+
+.tool-badge:nth-child(23) { /* Kiro */
+    background: rgba(12, 207, 237, 0.25);
+    border-color: rgba(80, 230, 255, 0.6);
+    color: #50E6FF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1.15s, 2.45s;
+}
+
+.tool-badge:nth-child(24) { /* Canva */
+    background: rgba(0, 193, 213, 0.25);
+    border-color: rgba(60, 230, 245, 0.6);
+    color: #3CE6F5;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1.2s, 2.8s;
+}
+
+.tool-badge:nth-child(25) { /* Adobe Photoshop */
+    background: rgba(49, 168, 255, 0.25);
+    border-color: rgba(100, 200, 255, 0.6);
+    color: #64C8FF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1.25s, 0.15s;
+}
+
+.tool-badge:nth-child(26) { /* Make.ai */
+    background: rgba(108, 99, 255, 0.25);
+    border-color: rgba(160, 150, 255, 0.6);
+    color: #A096FF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1.3s, 0.5s;
+}
+
+.tool-badge:nth-child(27) { /* Meta Ads */
+    background: rgba(0, 102, 255, 0.25);
+    border-color: rgba(80, 160, 255, 0.6);
+    color: #50A0FF;
+    animation: fadeInUp 0.6s ease forwards, float-badge 3s ease-in-out infinite;
+    animation-delay: 1.35s, 0.85s;
+}
+
+/* Enhanced hover with brand colors */
+.tool-badge:hover {
+    transform: translateY(-8px) scale(1.08);
+    filter: brightness(1.2);
+    animation-play-state: paused;
+}
 
 /* Responsive for Explored Tools */
 @media (max-width: 768px) {
