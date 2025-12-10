@@ -10,6 +10,18 @@ const themeToggle = document.getElementById('themeToggle');
 // ===== Theme Switching =====
 let leavesContainer = null;
 let leavesInterval = null;
+let isTransitioning = false;
+
+function createTransitionOverlay() {
+    // Remove existing overlay if any
+    const existingOverlay = document.querySelector('.theme-transition-overlay');
+    if (existingOverlay) existingOverlay.remove();
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'theme-transition-overlay';
+    document.body.appendChild(overlay);
+    return overlay;
+}
 
 function initTheme() {
     const savedTheme = localStorage.getItem('portfolio-theme');
@@ -22,25 +34,86 @@ function initTheme() {
 }
 
 function toggleTheme() {
-    const isNature = document.body.classList.toggle('nature-theme');
-    localStorage.setItem('portfolio-theme', isNature ? 'nature' : 'dark');
+    if (isTransitioning) return;
+    isTransitioning = true;
     
-    if (isNature) {
-        createLeavesContainer();
-        startLeaves();
-        // Hide particles
-        const particles = document.querySelector('.particles');
-        if (particles) particles.style.display = 'none';
+    const goingToNature = !document.body.classList.contains('nature-theme');
+    const overlay = createTransitionOverlay();
+    
+    // Add appropriate transition class
+    if (goingToNature) {
+        overlay.classList.add('nature-transition');
+        // Add clouds and bushes elements
+        overlay.innerHTML = `
+            <div class="transition-clouds">
+                <div class="t-cloud t-cloud-1"></div>
+                <div class="t-cloud t-cloud-2"></div>
+                <div class="t-cloud t-cloud-3"></div>
+            </div>
+            <div class="transition-bushes">
+                <div class="t-bush t-bush-1"></div>
+                <div class="t-bush t-bush-2"></div>
+                <div class="t-bush t-bush-3"></div>
+                <div class="t-bush t-bush-4"></div>
+                <div class="t-bush t-bush-5"></div>
+            </div>
+            <div class="transition-sun"></div>
+        `;
     } else {
-        stopLeaves();
-        // Show particles or create them
-        let particles = document.querySelector('.particles');
-        if (particles) {
-            particles.style.display = 'block';
-        } else {
-            createParticles();
-        }
+        overlay.classList.add('cosmic-transition');
+        // Add stars and cosmic elements
+        overlay.innerHTML = `
+            <div class="transition-stars"></div>
+            <div class="transition-moon"></div>
+            <div class="transition-sparkles">
+                <div class="t-sparkle"></div>
+                <div class="t-sparkle"></div>
+                <div class="t-sparkle"></div>
+                <div class="t-sparkle"></div>
+                <div class="t-sparkle"></div>
+                <div class="t-sparkle"></div>
+                <div class="t-sparkle"></div>
+                <div class="t-sparkle"></div>
+            </div>
+        `;
     }
+    
+    // Trigger animation
+    requestAnimationFrame(() => {
+        overlay.classList.add('active');
+    });
+    
+    // At peak of transition, switch the theme
+    setTimeout(() => {
+        document.body.classList.toggle('nature-theme');
+        localStorage.setItem('portfolio-theme', goingToNature ? 'nature' : 'dark');
+        
+        if (goingToNature) {
+            createLeavesContainer();
+            startLeaves();
+            const particles = document.querySelector('.particles');
+            if (particles) particles.style.display = 'none';
+        } else {
+            stopLeaves();
+            let particles = document.querySelector('.particles');
+            if (particles) {
+                particles.style.display = 'block';
+            } else {
+                createParticles();
+            }
+        }
+    }, 800);
+    
+    // Start exit animation
+    setTimeout(() => {
+        overlay.classList.add('exit');
+    }, 1000);
+    
+    // Remove overlay after animation completes
+    setTimeout(() => {
+        overlay.remove();
+        isTransitioning = false;
+    }, 1800);
 }
 
 if (themeToggle) {
@@ -350,33 +423,52 @@ document.querySelectorAll('.skill-item').forEach(item => {
     });
 });
 
-// ===== Create Floating Particles & Bubbles =====
+// ===== Create Floating Cosmic Particles =====
 function createParticles() {
     const particlesContainer = document.createElement('div');
     particlesContainer.className = 'particles';
     document.body.appendChild(particlesContainer);
     
-    // Particle size configurations
-    const sizes = [
-        { class: 'small', count: 25, durationRange: [15, 20] },
-        { class: 'medium', count: 15, durationRange: [18, 25] },
-        { class: 'large', count: 10, durationRange: [22, 30] },
-        { class: 'xlarge', count: 5, durationRange: [25, 35] }
+    // Moon position to avoid (top-right area: right 15%, top 10%)
+    const moonArea = { minX: 75, maxX: 95, minY: 5, maxY: 25 };
+    
+    // Check if position is in moon area
+    function isInMoonArea(x, y) {
+        return x >= moonArea.minX && x <= moonArea.maxX && y >= moonArea.minY && y <= moonArea.maxY;
+    }
+    
+    // Get random position avoiding moon
+    function getRandomPosition() {
+        let x, y;
+        do {
+            x = Math.random() * 100;
+            y = Math.random() * 100;
+        } while (isInMoonArea(x, y));
+        return { x, y };
+    }
+    
+    // Cosmic particle types
+    const particleTypes = [
+        { class: 'star-tiny', count: 30, durationRange: [12, 18] },
+        { class: 'star-small', count: 20, durationRange: [15, 22] },
+        { class: 'sparkle', count: 15, durationRange: [10, 16] },
+        { class: 'glow-orb', count: 8, durationRange: [20, 30] },
+        { class: 'shooting-star', count: 3, durationRange: [4, 8] }
     ];
     
-    sizes.forEach(size => {
-        for (let i = 0; i < size.count; i++) {
+    particleTypes.forEach(type => {
+        for (let i = 0; i < type.count; i++) {
             const particle = document.createElement('div');
-            particle.className = `particle ${size.class}`;
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.animationDelay = `${Math.random() * 20}s`;
-            const duration = size.durationRange[0] + Math.random() * (size.durationRange[1] - size.durationRange[0]);
-            particle.style.animationDuration = `${duration}s`;
+            particle.className = `particle ${type.class}`;
             
-            // Add wobble animation for larger bubbles
-            if (size.class === 'large' || size.class === 'xlarge') {
-                particle.style.animationName = 'bubbleWobble';
-            }
+            // Get position avoiding moon area
+            const pos = getRandomPosition();
+            particle.style.left = `${pos.x}%`;
+            particle.style.top = `${pos.y}%`;
+            
+            particle.style.animationDelay = `${Math.random() * 15}s`;
+            const duration = type.durationRange[0] + Math.random() * (type.durationRange[1] - type.durationRange[0]);
+            particle.style.animationDuration = `${duration}s`;
             
             particlesContainer.appendChild(particle);
         }
