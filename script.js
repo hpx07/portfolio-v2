@@ -7,6 +7,37 @@ const statNumbers = document.querySelectorAll('.stat-number');
 const navLinkItems = document.querySelectorAll('.nav-link');
 const themeToggle = document.getElementById('themeToggle');
 
+// ===== Performance Detection =====
+function isLowEndDevice() {
+    // Check for reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+    
+    // Check hardware concurrency (CPU cores)
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) return true;
+    
+    // Check device memory (if available)
+    if (navigator.deviceMemory && navigator.deviceMemory <= 4) return true;
+    
+    // Check if mobile device
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return true;
+    
+    return false;
+}
+
+const isLowEnd = isLowEndDevice();
+
+// ===== Throttle Function for Performance =====
+function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
 // ===== Theme Switching =====
 let leavesContainer = null;
 let leavesInterval = null;
@@ -157,8 +188,12 @@ function createLeaf() {
 function startLeaves() {
     if (leavesInterval) return;
     
+    // Optimized leaf counts for smooth performance
+    const initialLeaves = isLowEnd ? 2 : 4;
+    const leafInterval = isLowEnd ? 4000 : 2000;
+    
     // Create initial leaves
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < initialLeaves; i++) {
         setTimeout(() => createLeaf(), i * 400);
     }
     
@@ -167,7 +202,7 @@ function startLeaves() {
         if (document.body.classList.contains('nature-theme')) {
             createLeaf();
         }
-    }, 1200);
+    }, leafInterval);
 }
 
 function stopLeaves() {
@@ -181,7 +216,7 @@ function stopLeaves() {
 }
 
 // ===== Navbar Scroll Effect =====
-window.addEventListener('scroll', () => {
+const handleScroll = throttle(() => {
     if (window.scrollY > 100) {
         navbar.classList.add('scrolled');
     } else {
@@ -197,7 +232,9 @@ window.addEventListener('scroll', () => {
     
     // Update active nav link based on scroll position
     updateActiveNavLink();
-});
+}, 100);
+
+window.addEventListener('scroll', handleScroll, { passive: true });
 
 // ===== Mobile Navigation Toggle =====
 navToggle.addEventListener('click', () => {
@@ -384,21 +421,24 @@ function typeWriter(element, text, speed = 100) {
     type();
 }
 
-// ===== Parallax Effect =====
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
+// ===== Parallax Effect (disabled on low-end devices) =====
+if (!isLowEnd) {
     const glows = document.querySelectorAll('.glow');
+    const handleParallax = throttle(() => {
+        const scrolled = window.pageYOffset;
+        glows.forEach((glow, index) => {
+            const speed = (index + 1) * 0.1;
+            glow.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+    }, 50);
     
-    glows.forEach((glow, index) => {
-        const speed = (index + 1) * 0.1;
-        glow.style.transform = `translateY(${scrolled * speed}px)`;
-    });
-});
+    window.addEventListener('scroll', handleParallax, { passive: true });
+}
 
-// ===== Mouse Move Effect on Hero Image =====
+// ===== Mouse Move Effect on Hero Image (disabled on low-end/touch devices) =====
 const heroImage = document.querySelector('.hero-image');
-if (heroImage) {
-    document.addEventListener('mousemove', (e) => {
+if (heroImage && !isLowEnd) {
+    const handleMouseMove = throttle((e) => {
         const { clientX, clientY } = e;
         const { innerWidth, innerHeight } = window;
         
@@ -406,7 +446,9 @@ if (heroImage) {
         const yPos = (clientY / innerHeight - 0.5) * 20;
         
         heroImage.style.transform = `translate(${xPos}px, ${yPos}px)`;
-    });
+    }, 50);
+    
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
 }
 
 // ===== Project Card UI Hover Effects =====
@@ -456,13 +498,15 @@ function createParticles() {
         return { x, y };
     }
     
-    // Cosmic particle types
-    const particleTypes = [
-        { class: 'star-tiny', count: 30, durationRange: [12, 18] },
-        { class: 'star-small', count: 20, durationRange: [15, 22] },
-        { class: 'sparkle', count: 15, durationRange: [10, 16] },
-        { class: 'glow-orb', count: 8, durationRange: [20, 30] },
-        { class: 'shooting-star', count: 3, durationRange: [4, 8] }
+    // Optimized particle counts for smooth performance
+    const particleTypes = isLowEnd ? [
+        { class: 'star-tiny', count: 6, durationRange: [18, 25] },
+        { class: 'star-small', count: 4, durationRange: [20, 28] }
+    ] : [
+        { class: 'star-tiny', count: 15, durationRange: [15, 22] },
+        { class: 'star-small', count: 10, durationRange: [18, 25] },
+        { class: 'sparkle', count: 6, durationRange: [12, 18] },
+        { class: 'glow-orb', count: 4, durationRange: [25, 35] }
     ];
     
     particleTypes.forEach(type => {
@@ -505,37 +549,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// ===== Cursor Effect =====
-const cursor = document.createElement('div');
-cursor.className = 'custom-cursor';
-document.body.appendChild(cursor);
+// ===== Cursor Effect (disabled on low-end devices) =====
+if (!isLowEnd) {
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
 
-const cursorFollower = document.createElement('div');
-cursorFollower.className = 'cursor-follower';
-document.body.appendChild(cursorFollower);
+    const cursorFollower = document.createElement('div');
+    cursorFollower.className = 'cursor-follower';
+    document.body.appendChild(cursorFollower);
 
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = `${e.clientX}px`;
-    cursor.style.top = `${e.clientY}px`;
+    // Throttled cursor movement for performance
+    let cursorX = 0, cursorY = 0;
+    let followerX = 0, followerY = 0;
     
-    setTimeout(() => {
-        cursorFollower.style.left = `${e.clientX}px`;
-        cursorFollower.style.top = `${e.clientY}px`;
-    }, 100);
-});
-
-// Add hover effect to interactive elements
-document.querySelectorAll('a, button, .skill-item, .project-card, .project-card-ui, .social-icon-animated').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-        cursorFollower.classList.add('hover');
-    });
+    document.addEventListener('mousemove', (e) => {
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+    }, { passive: true });
     
-    el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-        cursorFollower.classList.remove('hover');
+    // Use requestAnimationFrame for smooth cursor
+    function updateCursor() {
+        cursor.style.left = `${cursorX}px`;
+        cursor.style.top = `${cursorY}px`;
+        
+        // Smooth follower with lerp
+        followerX += (cursorX - followerX) * 0.15;
+        followerY += (cursorY - followerY) * 0.15;
+        cursorFollower.style.left = `${followerX}px`;
+        cursorFollower.style.top = `${followerY}px`;
+        
+        requestAnimationFrame(updateCursor);
+    }
+    updateCursor();
+
+    // Add hover effect to interactive elements
+    document.querySelectorAll('a, button, .skill-item, .project-card, .project-card-ui, .social-icon-animated').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+            cursorFollower.classList.add('hover');
+        });
+        
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+            cursorFollower.classList.remove('hover');
+        });
     });
-});
+}
 
 // ===== Preloader =====
 window.addEventListener('load', () => {
@@ -548,16 +608,18 @@ window.addEventListener('load', () => {
 });
 
 
-// ===== Mouse Glow Effect on Cards =====
-document.querySelectorAll('.skill-item, .project-card, .project-card-ui').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty('--mouse-x', `${x}%`);
-        card.style.setProperty('--mouse-y', `${y}%`);
+// ===== Mouse Glow Effect on Cards (disabled on low-end devices) =====
+if (!isLowEnd) {
+    document.querySelectorAll('.skill-item, .project-card, .project-card-ui').forEach(card => {
+        card.addEventListener('mousemove', throttle((e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--mouse-x', `${x}%`);
+            card.style.setProperty('--mouse-y', `${y}%`);
+        }, 50), { passive: true });
     });
-});
+}
 
 // ===== Animated Social Icons Interactions =====
 document.querySelectorAll('.social-icon-animated').forEach((icon) => {

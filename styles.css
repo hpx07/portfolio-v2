@@ -6068,3 +6068,145 @@ body.nature-theme .particles {
         transform: scale(1) rotate(360deg);
     }
 }
+
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* GLOBAL: Remove expensive backdrop-filter everywhere for better performance */
+.navbar,
+.navbar.scrolled,
+.stats,
+.about,
+.skills-showcase,
+.explored-tools-section,
+.projects,
+.contact,
+.footer,
+.contact-form-wrapper,
+.tool-badge,
+.skill-icon-large,
+.project-card-ui,
+body.nature-theme .navbar,
+body.nature-theme .stats,
+body.nature-theme .about,
+body.nature-theme .skills-showcase,
+body.nature-theme .explored-tools-section,
+body.nature-theme .projects,
+body.nature-theme .contact,
+body.nature-theme .footer,
+body.nature-theme .contact-form-wrapper,
+body.nature-theme .tool-badge,
+body.nature-theme .skill-icon-large,
+body.nature-theme .project-card-ui {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Simplify all box-shadows for performance */
+.glow-orb,
+.particle.glow-orb {
+    box-shadow: 0 0 8px currentColor !important;
+    animation: orbFloat 25s ease-in-out infinite !important;
+}
+
+/* Disable shooting stars - very expensive */
+.shooting-star,
+.particle.shooting-star {
+    display: none !important;
+}
+
+/* Simplify sparkles */
+.particle.sparkle {
+    animation: starTwinkle 4s ease-in-out infinite !important;
+}
+
+/* Reduce glow blur intensity */
+.glow {
+    filter: blur(80px) !important;
+    opacity: 0.3 !important;
+}
+
+/* Simplified bird wing animation */
+.wing {
+    animation: wingFlap 0.4s ease-in-out infinite !important;
+}
+
+@keyframes wingFlap {
+    0%, 100% { transform: rotateX(0deg); }
+    50% { transform: rotateX(60deg); }
+}
+
+/* Reduced Motion - For users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .particles,
+    .leaves-container,
+    .glow,
+    .cosmic-stars,
+    .birds-container {
+        display: none !important;
+    }
+    
+    .theme-transition-overlay {
+        transition: opacity 0.3s ease !important;
+        clip-path: none !important;
+    }
+    
+    .theme-transition-overlay.active {
+        opacity: 1;
+    }
+    
+    .theme-transition-overlay.exit {
+        opacity: 0;
+    }
+}
+
+/* Mobile/Touch device optimizations */
+@media (max-width: 768px), (hover: none) {
+    /* Hide particles and leaves on mobile */
+    .particles,
+    .leaves-container {
+        display: none !important;
+    }
+    
+    /* Disable bird animations */
+    .bird,
+    .birds-container {
+        display: none !important;
+    }
+    
+    /* Simplify glows */
+    .glow {
+        display: none !important;
+    }
+    
+    /* Faster transitions */
+    * {
+        transition-duration: 0.15s !important;
+    }
+}
+
+/* GPU acceleration hints for smoother animations */
+.particle,
+.leaf,
+.bird,
+.glow,
+.theme-transition-overlay {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Optimize paint areas */
+.cosmic-stars,
+.forest-landscape,
+.bg-animation {
+    contain: layout style paint;
+}
