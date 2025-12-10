@@ -72,3 +72,5 @@ Simply open `index.html` in your browser to view the portfolio.
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
+
+## [DEVELOPER](https://github.com/hpx07)
