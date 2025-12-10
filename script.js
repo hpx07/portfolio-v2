@@ -71,7 +71,7 @@ function updateActiveNavLink() {
 // ===== Counter Animation =====
 function animateCounter(element) {
     const target = parseInt(element.getAttribute('data-target'));
-    const duration = 2000;
+    const duration = 3000;
     const step = target / (duration / 16);
     let current = 0;
     
@@ -249,20 +249,37 @@ document.querySelectorAll('.skill-item').forEach(item => {
     });
 });
 
-// ===== Create Floating Particles =====
+// ===== Create Floating Particles & Bubbles =====
 function createParticles() {
     const particlesContainer = document.createElement('div');
     particlesContainer.className = 'particles';
     document.body.appendChild(particlesContainer);
     
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 15}s`;
-        particle.style.animationDuration = `${15 + Math.random() * 10}s`;
-        particlesContainer.appendChild(particle);
-    }
+    // Particle size configurations
+    const sizes = [
+        { class: 'small', count: 25, durationRange: [15, 20] },
+        { class: 'medium', count: 15, durationRange: [18, 25] },
+        { class: 'large', count: 10, durationRange: [22, 30] },
+        { class: 'xlarge', count: 5, durationRange: [25, 35] }
+    ];
+    
+    sizes.forEach(size => {
+        for (let i = 0; i < size.count; i++) {
+            const particle = document.createElement('div');
+            particle.className = `particle ${size.class}`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDelay = `${Math.random() * 20}s`;
+            const duration = size.durationRange[0] + Math.random() * (size.durationRange[1] - size.durationRange[0]);
+            particle.style.animationDuration = `${duration}s`;
+            
+            // Add wobble animation for larger bubbles
+            if (size.class === 'large' || size.class === 'xlarge') {
+                particle.style.animationName = 'bubbleWobble';
+            }
+            
+            particlesContainer.appendChild(particle);
+        }
+    });
 }
 
 // ===== Initialize =====
