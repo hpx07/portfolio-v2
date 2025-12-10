@@ -1103,6 +1103,8 @@ body.nature-theme .cosmic-bg {
     background: var(--primary-dark);
     padding: 3rem 2rem;
     text-align: center;
+    position: relative;
+    z-index: 10;
 }
 
 .footer-container {
@@ -5065,15 +5067,25 @@ body.nature-theme .contact {
 }
 
 body.nature-theme .footer {
-    background: rgba(20, 83, 45, 0.7) !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+body.nature-theme .footer-logo .logo-hi {
+    background: #22c55e;
+}
+
+body.nature-theme .footer-logo .logo-dev {
+    color: #166534;
 }
 
 body.nature-theme .footer-text {
-    color: #d1fae5;
+    color: #166534;
 }
 
 body.nature-theme .footer-text .highlight {
-    color: #4ade80;
+    color: #16a34a;
 }
 
 /* Nature Theme Navbar */
@@ -5161,14 +5173,29 @@ body.nature-theme .social-icon-animated i {
     filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.5));
 }
 
+body.nature-theme .social-icon-animated:hover i {
+    color: #16a34a !important;
+    filter: drop-shadow(0 0 15px rgba(34, 197, 94, 0.6)) !important;
+}
+
 body.nature-theme .social-glow {
     background: #22c55e;
     box-shadow: 0 0 15px #22c55e, 0 0 30px rgba(34, 197, 94, 0.5);
 }
 
+body.nature-theme .social-icon-animated:hover .social-glow {
+    background: #22c55e !important;
+    box-shadow: 0 0 25px #22c55e, 0 0 50px rgba(34, 197, 94, 0.7) !important;
+}
+
 body.nature-theme .tech-glow {
     background: #22c55e;
     box-shadow: 0 0 12px #22c55e, 0 0 25px rgba(34, 197, 94, 0.5);
+}
+
+body.nature-theme .tech-icon:hover .tech-glow {
+    background: #22c55e !important;
+    box-shadow: 0 0 20px #22c55e, 0 0 40px rgba(34, 197, 94, 0.7) !important;
 }
 
 /* Nature Theme Skills */
@@ -5249,8 +5276,9 @@ body.nature-theme .contact-tag {
 }
 
 body.nature-theme .contact-tag:hover {
-    background: #22c55e;
-    color: #ffffff;
+    background: #22c55e !important;
+    color: #ffffff !important;
+    border-color: #22c55e !important;
 }
 
 body.nature-theme .contact-form-wrapper {
@@ -5284,7 +5312,8 @@ body.nature-theme .submit-btn {
 }
 
 body.nature-theme .submit-btn:hover {
-    background: #16a34a;
+    background: #16a34a !important;
+    box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4) !important;
 }
 
 /* Nature Theme Scroll Top */
@@ -5355,6 +5384,115 @@ body.nature-theme .loading {
 
 body.nature-theme .loader {
     border-top-color: #22c55e;
+}
+
+/* Nature Theme Social Links */
+body.nature-theme .social-link {
+    border-color: #22c55e;
+    color: #166534;
+}
+
+body.nature-theme .social-link:hover {
+    background: #22c55e;
+    box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+}
+
+/* Nature Theme Project Links */
+body.nature-theme .project-link {
+    color: #166534;
+}
+
+body.nature-theme .project-link:hover {
+    background: #22c55e;
+    color: #ffffff;
+}
+
+/* Nature Theme Project Overlay */
+body.nature-theme .project-overlay {
+    background: rgba(34, 197, 94, 0.9);
+}
+
+/* Nature Theme Tags */
+body.nature-theme .tag {
+    background: rgba(34, 197, 94, 0.15);
+    color: #166534;
+}
+
+/* Nature Theme Form Socials */
+body.nature-theme .form-social {
+    background: rgba(255, 255, 255, 0.3);
+    color: #166534;
+}
+
+body.nature-theme .form-social:hover {
+    background: #22c55e !important;
+    color: #ffffff !important;
+    box-shadow: 0 5px 20px rgba(34, 197, 94, 0.4) !important;
+}
+
+/* Nature Theme Footer Socials */
+body.nature-theme .footer-social {
+    background: rgba(34, 197, 94, 0.15) !important;
+    color: #166534 !important;
+    border: 1px solid rgba(34, 197, 94, 0.3) !important;
+}
+
+body.nature-theme .footer-social:hover {
+    background: #22c55e !important;
+    color: #ffffff !important;
+    border-color: #22c55e !important;
+    box-shadow: 0 5px 20px rgba(34, 197, 94, 0.4) !important;
+}
+
+/* Nature Theme Scrollbar */
+body.nature-theme::-webkit-scrollbar-thumb {
+    background: #22c55e;
+}
+
+body.nature-theme::-webkit-scrollbar-thumb:hover {
+    background: #16a34a;
+}
+
+body.nature-theme::-webkit-scrollbar-track {
+    background: #d1fae5;
+}
+
+/* Nature Theme Selection */
+body.nature-theme ::selection {
+    background: #22c55e;
+    color: #ffffff;
+}
+
+/* Nature Theme Cursor Hover */
+body.nature-theme .custom-cursor.hover {
+    background: #16a34a;
+}
+
+body.nature-theme .cursor-follower.hover {
+    border-color: #22c55e;
+}
+
+/* Nature Theme Skill Card Hover */
+body.nature-theme .skill-card:hover {
+    box-shadow: 0 20px 40px rgba(34, 197, 94, 0.2);
+}
+
+/* Nature Theme Tech Icons */
+body.nature-theme .tech-icon:hover i {
+    filter: drop-shadow(0 0 15px #22c55e);
+}
+
+/* Nature Theme Glow Effects */
+body.nature-theme .glow-1 {
+    background: rgba(134, 239, 172, 0.3);
+}
+
+body.nature-theme .glow-2 {
+    background: rgba(74, 222, 128, 0.25);
+}
+
+body.nature-theme .glow-3 {
+    background: rgba(34, 197, 94, 0.2);
 }
 
 /* ===== FLOATING LEAVES ===== */
