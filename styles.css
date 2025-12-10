@@ -1754,8 +1754,249 @@ body.nature-theme .cosmic-bg {
 
 @media (max-width: 768px) {
     .custom-cursor,
-    .cursor-follower {
+    .cursor-follower,
+    .cosmic-trail-container {
         display: none;
+    }
+}
+
+/* ===== Cosmic Mouse Trail Effect ===== */
+.cosmic-trail-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    overflow: hidden;
+}
+
+.trail-particle {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: trailFade 1s ease-out forwards;
+}
+
+/* Star trail particle */
+.trail-star {
+    background: var(--trail-color, #0CCFED);
+    box-shadow: 
+        0 0 6px var(--trail-color, #0CCFED),
+        0 0 12px var(--trail-color, #0CCFED);
+}
+
+/* Sparkle trail particle */
+.trail-sparkle {
+    background: transparent;
+    width: 8px !important;
+    height: 8px !important;
+}
+
+.trail-sparkle::before,
+.trail-sparkle::after {
+    content: '';
+    position: absolute;
+    background: var(--trail-color, #ffffff);
+    border-radius: 2px;
+}
+
+.trail-sparkle::before {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    box-shadow: 0 0 4px var(--trail-color, #ffffff);
+}
+
+.trail-sparkle::after {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    box-shadow: 0 0 4px var(--trail-color, #ffffff);
+}
+
+/* Dot trail particle */
+.trail-dot {
+    background: radial-gradient(circle, var(--trail-color, #E1BBED) 0%, transparent 70%);
+    box-shadow: 0 0 8px var(--trail-color, #E1BBED);
+}
+
+/* Trail fade animation */
+@keyframes trailFade {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5) translateY(-20px);
+    }
+}
+
+/* Hide trail in nature theme */
+body.nature-theme .cosmic-trail-container {
+    display: none;
+}
+
+/* ===== Nature Mouse Trail Effect ===== */
+.nature-trail-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    overflow: hidden;
+    display: none;
+}
+
+body.nature-theme .nature-trail-container {
+    display: block;
+}
+
+.nature-trail-particle {
+    position: fixed;
+    pointer-events: none;
+    transform: translate(-50%, -50%) rotate(var(--rotation, 0deg));
+    animation: natureTrailFade 1.2s ease-out forwards;
+}
+
+/* Leaf trail particle */
+.nature-trail-leaf {
+    width: 12px !important;
+    height: 12px !important;
+    background: var(--nature-color, #22c55e);
+    border-radius: 0 70% 0 70%;
+    box-shadow: 0 0 4px var(--nature-color, #22c55e);
+    animation: natureLeafFall 1.2s ease-out forwards;
+}
+
+.nature-trail-leaf::before {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 60%;
+    background: rgba(0, 0, 0, 0.2);
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%) rotate(-10deg);
+}
+
+/* Petal trail particle */
+.nature-trail-petal {
+    width: 10px !important;
+    height: 14px !important;
+    background: var(--nature-color, #f472b6);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 0 0 6px var(--nature-color, #f472b6);
+    animation: naturePetalFall 1.2s ease-out forwards;
+}
+
+/* Sparkle trail particle (like sunlight) */
+.nature-trail-sparkle {
+    background: transparent;
+    width: 10px !important;
+    height: 10px !important;
+}
+
+.nature-trail-sparkle::before,
+.nature-trail-sparkle::after {
+    content: '';
+    position: absolute;
+    background: var(--nature-color, #fbbf24);
+    border-radius: 2px;
+}
+
+.nature-trail-sparkle::before {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    box-shadow: 0 0 6px var(--nature-color, #fbbf24);
+}
+
+.nature-trail-sparkle::after {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    box-shadow: 0 0 6px var(--nature-color, #fbbf24);
+}
+
+/* Dot trail particle (like pollen/dust) */
+.nature-trail-dot {
+    background: radial-gradient(circle, var(--nature-color, #86efac) 0%, transparent 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--nature-color, #86efac);
+}
+
+/* Nature trail fade animation */
+@keyframes natureTrailFade {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(0.3) translateY(15px);
+    }
+}
+
+/* Leaf falling animation */
+@keyframes natureLeafFall {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) rotate(calc(var(--rotation, 0deg) + 45deg)) scale(1.1) translateX(10px);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(calc(var(--rotation, 0deg) + 90deg)) scale(0.5) translateY(30px);
+    }
+}
+
+/* Petal floating animation */
+@keyframes naturePetalFall {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) scale(1);
+    }
+    30% {
+        transform: translate(-50%, -50%) rotate(calc(var(--rotation, 0deg) + 30deg)) scale(1.2) translateX(-8px);
+    }
+    60% {
+        transform: translate(-50%, -50%) rotate(calc(var(--rotation, 0deg) + 60deg)) scale(1) translateX(8px) translateY(15px);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(calc(var(--rotation, 0deg) + 120deg)) scale(0.4) translateY(35px);
+    }
+}
+
+/* Hide nature trail in cosmic theme */
+body:not(.nature-theme) .nature-trail-container {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .nature-trail-container {
+        display: none !important;
     }
 }
 
@@ -3831,21 +4072,67 @@ body.nature-theme .cosmic-bg {
 
 /* ===== UNIVERSE OF UI STYLE PROJECT CARDS ===== */
 .project-card-ui {
-    background: rgba(51, 16, 82, 0.5);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(51, 16, 82, 0.7) 0%, rgba(41, 16, 58, 0.9) 100%);
+    border: 1px solid rgba(129, 33, 208, 0.3);
+    border-radius: 24px;
     overflow: hidden;
-    transition: all 0.4s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     position: relative;
+    animation: cardFloat 6s ease-in-out infinite;
+}
+
+/* Staggered floating animation for each card */
+.project-card-ui:nth-child(1) { animation-delay: 0s; }
+.project-card-ui:nth-child(2) { animation-delay: 1s; }
+.project-card-ui:nth-child(3) { animation-delay: 2s; }
+.project-card-ui:nth-child(4) { animation-delay: 3s; }
+.project-card-ui:nth-child(5) { animation-delay: 0.5s; }
+.project-card-ui:nth-child(6) { animation-delay: 1.5s; }
+
+@keyframes cardFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-12px) rotate(0.5deg);
+    }
+}
+
+/* Glowing border effect */
+.project-card-ui::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 24px;
+    padding: 2px;
+    background: linear-gradient(135deg, transparent 0%, rgba(12, 207, 237, 0.3) 50%, transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.project-card-ui:hover::before {
+    opacity: 1;
 }
 
 .project-card-ui:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 25px 50px rgba(129, 33, 208, 0.4);
-    border-color: rgba(12, 207, 237, 0.3);
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 
+        0 30px 60px rgba(129, 33, 208, 0.4),
+        0 0 30px rgba(12, 207, 237, 0.2),
+        0 0 0 1px rgba(12, 207, 237, 0.3) inset;
+    border-color: rgba(12, 207, 237, 0.5);
+    animation-play-state: paused;
 }
 
 /* Browser Bar */
@@ -3942,9 +4229,19 @@ body.nature-theme .cosmic-bg {
 
 /* Info Section */
 .card-info-section {
-    background: rgba(20, 20, 30, 0.95);
+    background: linear-gradient(180deg, rgba(20, 20, 30, 0.9) 0%, rgba(41, 16, 58, 0.95) 100%);
     padding: 1.5rem;
-    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.card-info-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(12, 207, 237, 0.5), transparent);
 }
 
 .card-project-title {
@@ -3952,18 +4249,22 @@ body.nature-theme .cosmic-bg {
     font-weight: 700;
     color: var(--white);
     margin-bottom: 0.5rem;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
 }
 
 .project-card-ui:hover .card-project-title {
     color: var(--cyan);
+    text-shadow: 0 0 20px rgba(12, 207, 237, 0.5);
 }
 
 .card-project-desc {
     font-size: 0.9rem;
     color: var(--light-purple);
     margin-bottom: 1rem;
-    line-height: 1.5;
+    line-height: 1.6;
+    opacity: 0.9;
 }
 
 .card-tags {
@@ -3973,10 +4274,19 @@ body.nature-theme .cosmic-bg {
 }
 
 .card-tag {
-    background: rgba(129, 33, 208, 0.3);
+    background: linear-gradient(135deg, rgba(129, 33, 208, 0.4) 0%, rgba(12, 207, 237, 0.2) 100%);
     color: var(--cyan);
-    padding: 0.4rem 0.9rem;
+    padding: 0.4rem 1rem;
     border-radius: 20px;
+    border: 1px solid rgba(12, 207, 237, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card-tag:hover {
+    background: linear-gradient(135deg, rgba(12, 207, 237, 0.4) 0%, rgba(129, 33, 208, 0.3) 100%);
+    border-color: rgba(12, 207, 237, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(12, 207, 237, 0.3);
     font-size: 0.8rem;
     font-weight: 600;
     border: 1px solid rgba(12, 207, 237, 0.2);
@@ -5227,21 +5537,70 @@ body.nature-theme .skills-showcase-title::after {
 
 /* Nature Theme Project Cards */
 body.nature-theme .project-card-ui {
-    background: rgba(255, 255, 255, 0.25);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    backdrop-filter: blur(8px);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.85) 0%, rgba(240, 253, 244, 0.9) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    box-shadow: 
+        0 10px 40px rgba(34, 197, 94, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+body.nature-theme .project-card-ui::before {
+    background: linear-gradient(135deg, transparent 0%, rgba(34, 197, 94, 0.4) 50%, transparent 100%);
 }
 
 body.nature-theme .project-card-ui:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(220, 252, 231, 0.95) 100%);
     border-color: #22c55e;
-    box-shadow: 0 20px 40px rgba(34, 197, 94, 0.2);
+    box-shadow: 
+        0 30px 60px rgba(34, 197, 94, 0.25),
+        0 0 30px rgba(34, 197, 94, 0.15),
+        0 0 0 1px rgba(34, 197, 94, 0.3) inset;
+}
+
+body.nature-theme .card-browser-bar {
+    background: linear-gradient(180deg, rgba(240, 253, 244, 0.95) 0%, rgba(220, 252, 231, 0.9) 100%);
+    border-bottom: 1px solid rgba(34, 197, 94, 0.15);
+}
+
+body.nature-theme .card-info-section {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 253, 244, 0.95) 100%);
+}
+
+body.nature-theme .card-info-section::before {
+    background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.5), transparent);
+}
+
+body.nature-theme .card-project-title {
+    color: #14532d;
+}
+
+body.nature-theme .project-card-ui:hover .card-project-title {
+    color: #16a34a;
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+}
+
+body.nature-theme .card-project-desc {
+    color: #166534;
 }
 
 body.nature-theme .card-tag {
-    background: rgba(34, 197, 94, 0.2);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(74, 222, 128, 0.15) 100%);
     color: #166534;
     border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+body.nature-theme .card-tag:hover {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.4) 0%, rgba(74, 222, 128, 0.3) 100%);
+    border-color: #22c55e;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.25);
+}
+
+body.nature-theme .browser-icon {
+    color: #166534;
+}
+
+body.nature-theme .browser-icon:hover {
+    color: #16a34a;
 }
 
 body.nature-theme .projects .section-title {

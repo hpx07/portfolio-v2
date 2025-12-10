@@ -595,6 +595,131 @@ if (!isLowEnd) {
             cursorFollower.classList.remove('hover');
         });
     });
+    
+    // ===== Cosmic Mouse Trail Effect =====
+    const trailContainer = document.createElement('div');
+    trailContainer.className = 'cosmic-trail-container';
+    document.body.appendChild(trailContainer);
+    
+    let lastTrailTime = 0;
+    const trailInterval = 50; // Create trail particle every 50ms
+    let lastX = 0, lastY = 0;
+    
+    function createTrailParticle(x, y) {
+        // Only create trail in cosmic theme (not nature theme)
+        if (document.body.classList.contains('nature-theme')) return;
+        
+        // Check if mouse moved enough
+        const distance = Math.sqrt((x - lastX) ** 2 + (y - lastY) ** 2);
+        if (distance < 5) return;
+        
+        lastX = x;
+        lastY = y;
+        
+        const particle = document.createElement('div');
+        
+        // Random particle type for variety
+        const types = ['star', 'sparkle', 'dot'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        particle.className = `trail-particle trail-${type}`;
+        
+        // Random offset for organic feel
+        const offsetX = (Math.random() - 0.5) * 20;
+        const offsetY = (Math.random() - 0.5) * 20;
+        
+        particle.style.left = `${x + offsetX}px`;
+        particle.style.top = `${y + offsetY}px`;
+        
+        // Random size
+        const size = 3 + Math.random() * 6;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random color from cosmic palette
+        const colors = ['#0CCFED', '#8121D0', '#E1BBED', '#ffffff'];
+        particle.style.setProperty('--trail-color', colors[Math.floor(Math.random() * colors.length)]);
+        
+        trailContainer.appendChild(particle);
+        
+        // Remove particle after animation
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.remove();
+            }
+        }, 1000);
+    }
+    
+    document.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - lastTrailTime > trailInterval) {
+            createTrailParticle(e.clientX, e.clientY);
+            lastTrailTime = now;
+        }
+    }, { passive: true });
+    
+    // ===== Nature Mouse Trail Effect =====
+    const natureTrailContainer = document.createElement('div');
+    natureTrailContainer.className = 'nature-trail-container';
+    document.body.appendChild(natureTrailContainer);
+    
+    let lastNatureTrailTime = 0;
+    const natureTrailInterval = 60;
+    let lastNatureX = 0, lastNatureY = 0;
+    
+    function createNatureTrailParticle(x, y) {
+        // Only create trail in nature theme
+        if (!document.body.classList.contains('nature-theme')) return;
+        
+        // Check if mouse moved enough
+        const distance = Math.sqrt((x - lastNatureX) ** 2 + (y - lastNatureY) ** 2);
+        if (distance < 8) return;
+        
+        lastNatureX = x;
+        lastNatureY = y;
+        
+        const particle = document.createElement('div');
+        
+        // Random particle type for variety
+        const types = ['leaf', 'petal', 'sparkle', 'dot'];
+        const type = types[Math.floor(Math.random() * types.length)];
+        particle.className = `nature-trail-particle nature-trail-${type}`;
+        
+        // Random offset
+        const offsetX = (Math.random() - 0.5) * 25;
+        const offsetY = (Math.random() - 0.5) * 25;
+        
+        particle.style.left = `${x + offsetX}px`;
+        particle.style.top = `${y + offsetY}px`;
+        
+        // Random rotation for leaves/petals
+        particle.style.setProperty('--rotation', `${Math.random() * 360}deg`);
+        
+        // Random size
+        const size = 6 + Math.random() * 10;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random color from nature palette
+        const colors = ['#22c55e', '#4ade80', '#86efac', '#166534', '#fbbf24', '#f472b6'];
+        particle.style.setProperty('--nature-color', colors[Math.floor(Math.random() * colors.length)]);
+        
+        natureTrailContainer.appendChild(particle);
+        
+        // Remove particle after animation
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.remove();
+            }
+        }, 1200);
+    }
+    
+    document.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - lastNatureTrailTime > natureTrailInterval) {
+            createNatureTrailParticle(e.clientX, e.clientY);
+            lastNatureTrailTime = now;
+        }
+    }, { passive: true });
 }
 
 // ===== Preloader =====
