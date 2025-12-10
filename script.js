@@ -5,6 +5,107 @@ const navLinks = document.querySelector('.nav-links');
 const scrollTopBtn = document.getElementById('scrollTop');
 const statNumbers = document.querySelectorAll('.stat-number');
 const navLinkItems = document.querySelectorAll('.nav-link');
+const themeToggle = document.getElementById('themeToggle');
+
+// ===== Theme Switching =====
+let leavesContainer = null;
+let leavesInterval = null;
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('portfolio-theme');
+    if (savedTheme === 'nature') {
+        document.body.classList.add('nature-theme');
+        if (themeToggle) themeToggle.checked = true;
+        createLeavesContainer();
+        startLeaves();
+    }
+}
+
+function toggleTheme() {
+    const isNature = document.body.classList.toggle('nature-theme');
+    localStorage.setItem('portfolio-theme', isNature ? 'nature' : 'dark');
+    
+    if (isNature) {
+        createLeavesContainer();
+        startLeaves();
+        // Hide particles
+        const particles = document.querySelector('.particles');
+        if (particles) particles.style.display = 'none';
+    } else {
+        stopLeaves();
+        // Show particles or create them
+        let particles = document.querySelector('.particles');
+        if (particles) {
+            particles.style.display = 'block';
+        } else {
+            createParticles();
+        }
+    }
+}
+
+if (themeToggle) {
+    themeToggle.addEventListener('change', toggleTheme);
+}
+
+// ===== Floating Leaves System =====
+function createLeavesContainer() {
+    if (leavesContainer) return;
+    
+    leavesContainer = document.createElement('div');
+    leavesContainer.className = 'leaves-container';
+    document.body.appendChild(leavesContainer);
+}
+
+function createLeaf() {
+    if (!leavesContainer || !document.body.classList.contains('nature-theme')) return;
+    
+    const leaf = document.createElement('div');
+    const sizes = ['small', 'medium', 'large'];
+    const leafTypes = ['leaf-1', 'leaf-2', 'leaf-3', 'leaf-4', 'leaf-5'];
+    
+    leaf.className = `leaf ${sizes[Math.floor(Math.random() * sizes.length)]} ${leafTypes[Math.floor(Math.random() * leafTypes.length)]}`;
+    leaf.innerHTML = `<svg viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>`;
+    
+    leaf.style.left = `${Math.random() * 100}%`;
+    leaf.style.animationDuration = `${8 + Math.random() * 7}s`;
+    leaf.style.animationDelay = `${Math.random() * 2}s`;
+    leaf.style.animation = `leafFall ${8 + Math.random() * 7}s linear forwards`;
+    
+    leavesContainer.appendChild(leaf);
+    
+    // Remove leaf after animation
+    setTimeout(() => {
+        if (leaf.parentNode) {
+            leaf.parentNode.removeChild(leaf);
+        }
+    }, 15000);
+}
+
+function startLeaves() {
+    if (leavesInterval) return;
+    
+    // Create initial leaves
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => createLeaf(), i * 400);
+    }
+    
+    // Continue creating leaves
+    leavesInterval = setInterval(() => {
+        if (document.body.classList.contains('nature-theme')) {
+            createLeaf();
+        }
+    }, 1200);
+}
+
+function stopLeaves() {
+    if (leavesInterval) {
+        clearInterval(leavesInterval);
+        leavesInterval = null;
+    }
+    if (leavesContainer) {
+        leavesContainer.innerHTML = '';
+    }
+}
 
 // ===== Navbar Scroll Effect =====
 window.addEventListener('scroll', () => {
@@ -284,7 +385,13 @@ function createParticles() {
 
 // ===== Initialize =====
 document.addEventListener('DOMContentLoaded', () => {
-    createParticles();
+    // Initialize theme first
+    initTheme();
+    
+    // Create particles (only if not nature theme)
+    if (!document.body.classList.contains('nature-theme')) {
+        createParticles();
+    }
     
     // Add stagger animation to skill items
     document.querySelectorAll('.skill-item').forEach((item, index) => {
